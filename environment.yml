@@ -1,0 +1,6 @@
+name: xlum-env
+channels:
+  - defaults
+dependencies:
+ - lxml
+ - pytest

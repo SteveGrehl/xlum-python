@@ -8,12 +8,12 @@ Python importer for https://github.com/R-Lum/xlum_specification
   
 ## Setting Up Conda
 
-```
-conda create --name xlum lxml pytest; conda activate xlum
+```console
+$ conda env create --prefix ./env --file environment.yml; conda activate ./env
 ```
 
 ## Usage
- ```
+ ```python
  import xlum
 
  meta_obj = xlum.importer.from_xlum(file_name="<Path to Xlum>")
