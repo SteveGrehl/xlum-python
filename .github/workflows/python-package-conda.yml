@@ -17,7 +17,7 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
-          architecture: ${{ matrix.architecture }}
+        architecture: ${{ matrix.architecture }}
     - name: setup-conda
       uses: s-weigand/setup-conda@v1.1.1
     - name: Add conda to system path
