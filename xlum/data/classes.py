@@ -30,9 +30,11 @@ class Xlum_DataFrame_Support(object):
             if len(k)>3 and k[:3] == "lst":
                 strLabel = k
         # Create data frame with all class-attributes, including and renaming _meta (if available)
-        lstDataFrames = [pd.DataFrame([self]).drop(columns=[strLabel], axis="columns")]
+        df = pd.DataFrame([self]).drop(columns=[strLabel], axis="columns")
+        df.rename(columns={k: self.__class__.__name__+"."+k for k in df.columns}, inplace=True)
+        lstDataFrames = [df]
         if "_meta" in self.__dict__:
-            lstDataFrames[0].drop(columns="_meta", axis="columns", inplace=True)
+            lstDataFrames[0].drop(columns=self.__class__.__name__+"."+"_meta", axis="columns", inplace=True)
             lstDataFrames.append(pd.DataFrame([self._meta]).rename(columns={c: self.__class__.__name__+"."+c for c in self._meta.__dict__}))
 
         # Add nested list as rows, records in a sequence
@@ -48,7 +50,7 @@ class Xlum_DataFrame_Support(object):
                 metaInformation.append(c)
         df_lst.drop(labels=nestedLists, axis="columns", inplace=True)
         # Rename '_meta' information in self.lst...
-        lstDataFrames.append(df_lst.rename(columns={k: k.replace("_meta", strLabel[3:]) for k in metaInformation}))
+        lstDataFrames.append(df_lst.rename(columns={k:  strLabel[3:]+"."+k.replace("_meta.","") for k in df_lst.columns}))
         # Merge class information and nested list information, sequence and its records
         return pd.concat(lstDataFrames, axis="columns")
 
@@ -147,6 +149,8 @@ class Curve(Xlum_DataFrame_Support):
                 attr[k] = list(map(int, element.attrib[k].split()))
             else:
                 attr[k] = []
+        lstStrValues = re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', element.text)
+        attr["lstValues"] = list(map(float, lstStrValues))
 
 
         if "startDate" not in element.attrib:
@@ -161,7 +165,6 @@ class Curve(Xlum_DataFrame_Support):
             date = datetime.strptime(element.attrib["startDate"], datetime_format)
 
         return Curve(
-            lstValues=re.findall(r'[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+', element.text),
             startDate=date,
             curveType=CurveType[element.attrib["curveType"].upper().replace("-", "_")] if "curveType" in element.attrib else CurveType.UNKNOWN,
             _meta = XLum_Meta.from_attributes(element.attrib),
@@ -317,6 +320,9 @@ class XlumMeta(Xlum_DataFrame_Support):
     lstSamples:List[Sample]=lambda: []
 
     formatVersion:str="NA"
+    author:str="NA"
+    lang:str="NA"
+    license:str="NA"
 
     @classmethod
     def from_element_tree(cls, tree:etree.ElementTree) -> 'XlumMeta':
@@ -333,7 +339,12 @@ class XlumMeta(Xlum_DataFrame_Support):
         for e in root.getchildren():
             print(e.tag)
 
+        attr = {}
+        #strings
+        for k in ["formatVersion", "author", "lang", "license"]:
+            if k in root.attrib:
+                attr[k] = root.attrib[k]
         return cls(
             lstSamples = [Sample.from_element(e) for e in root.getchildren() if e.tag.lower() == 'sample'],
-            formatVersion=root.attrib['formatVersion']
+            **attr
         )
