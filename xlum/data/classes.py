@@ -1,8 +1,10 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 from datetime import datetime
 from typing import Dict, List
 import re
 from lxml import etree
+import pandas as pd
+from functools import cached_property
 
 from data.enumerations import CurveType, RecordType, State, SampleCondition
 
@@ -156,7 +158,6 @@ class Record(object):
             sampleCondition=SampleCondition[element.attrib["sampleCondition"].upper().replace("+", "_").translate({ord(c):None for c in "()."})] if "sampleCondition" in element.attrib else SampleCondition.UNKNOWN,
         )
 
-
 @dataclass
 class Sequence(object):
 
@@ -197,8 +198,6 @@ class Sequence(object):
             _meta = meta,
             **attr,
         )
-
-
 
 @dataclass
 class Sample(object):
@@ -274,3 +273,14 @@ class XlumMeta(object):
             lstSamples = [Sample.from_element(e) for e in root.getchildren() if e.tag.lower() == 'sample'],
             formatVersion=root.attrib['formatVersion']
         )
+
+    @cached_property
+    def df(self) -> pd.DataFrame:
+        """dataclass as dataframe, but droping the nested list of samples
+
+        Returns:
+            pd.DataFrame: data frame
+        """
+        df = pd.DataFrame([self]).drop(labels="lstSamples", axis="columns")
+        df_samples = pd.json_normalize(asdict(sample) for sample in self.lstSamples).drop(labels="lstSequences", axis="columns")
+        return pd.concat([df, df_samples], axis="columns")

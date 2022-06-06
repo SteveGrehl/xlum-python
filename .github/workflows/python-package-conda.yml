@@ -12,8 +12,8 @@ jobs:
     runs-on:  ${{ matrix.os }}
     strategy:
       matrix:
-        os: [darwin, linux, win32]
-        python-version: [ '3.6.x', '3.7.x', '3.8.x', '3.9.x', '3.10.x']
+        os: ['darwin', 'linux', 'win32']
+        python-version: ['3.8.x', '3.9.x', '3.10.x']
         architecture: ['x64', 'x86']
 
     steps:
