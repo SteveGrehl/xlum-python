@@ -4,5 +4,4 @@ channels:
 dependencies:
  - lxml
  - pandas
- - functools
  - pytest

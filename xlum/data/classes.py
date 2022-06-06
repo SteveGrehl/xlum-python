@@ -8,6 +8,50 @@ from functools import cached_property
 
 from data.enumerations import CurveType, RecordType, State, SampleCondition
 
+class Xlum_DataFrame_Support(object):
+
+    def __init__(self) -> None:
+        """derault construktor - NOT IMPLEMENTED
+
+        Raises:
+            NotImplementedError: not intended to instantiate
+        """        
+        raise NotImplementedError("This class cannot be instantiated, please implement your own class that inherit its functionalities.")
+
+    @cached_property
+    def df(self) -> pd.DataFrame:
+        """dataclass as dataframe, with nested datapoints as rows
+        Returns:
+            pd.DataFrame: data frame
+        """
+        # Find class attribute with nested list, eg records within a sequence
+        for k in self.__dict__:
+            k:str
+            if len(k)>3 and k[:3] == "lst":
+                strLabel = k
+        # Create data frame with all class-attributes, including and renaming _meta (if available)
+        lstDataFrames = [pd.DataFrame([self]).drop(columns=[strLabel], axis="columns")]
+        if "_meta" in self.__dict__:
+            lstDataFrames[0].drop(columns="_meta", axis="columns", inplace=True)
+            lstDataFrames.append(pd.DataFrame([self._meta]).rename(columns={c: self.__class__.__name__+"."+c for c in self._meta.__dict__}))
+
+        # Add nested list as rows, records in a sequence
+        df_lst:pd.DataFrame = pd.json_normalize(asdict(entry) for entry in eval(f"self.{strLabel}"))
+        # Remove deeper nested informations, eg curves since lists in data frames are not best-practice - merge data frames if informations should be combined
+        nestedLists:List = []
+        metaInformation:List = []
+        for c in df_lst:
+            c:str
+            if len(c)>3 and c[:3] == "lst":
+                nestedLists.append(c)
+            if len(c)>5 and c[:5] == "_meta":
+                metaInformation.append(c)
+        df_lst.drop(labels=nestedLists, axis="columns", inplace=True)
+        # Rename '_meta' information in self.lst...
+        lstDataFrames.append(df_lst.rename(columns={k: k.replace("_meta", strLabel[3:]) for k in metaInformation}))
+        # Merge class information and nested list information, sequence and its records
+        return pd.concat(lstDataFrames, axis="columns")
+
 
 @dataclass
 class XLum_Meta(object):
@@ -46,7 +90,7 @@ class XLum_Meta(object):
 
 
 @dataclass
-class Curve(object):
+class Curve(Xlum_DataFrame_Support):
     
     lstValues:List=lambda: []  # internal list in the curve node
 
@@ -124,8 +168,28 @@ class Curve(object):
             **attr
             )
 
+    @cached_property
+    def df(self) -> pd.DataFrame:
+        """overloaded data frame generation
+
+        Returns:
+            pd.DataFrame: data frame
+        """
+        df:pd.DataFrame = pd.DataFrame([self]).drop(columns="_meta", axis="columns")
+        df_meta:pd.DataFrame = pd.DataFrame([self._meta]).rename(columns={c: self.__class__.__name__+"."+c for c in self._meta.__dict__})
+        metaInformation:List = []
+        lstSeriesColumns = []
+        for c in df:
+            c:str
+            if len(c)>5 and c[:5] == "_meta":
+                metaInformation.append(c)
+            if "Values" in c:
+                lstSeriesColumns.append(c)
+        df = df.rename(columns={"lstValues": "curve"})
+        return pd.concat([df, df_meta], axis="columns")
+
 @dataclass
-class Record(object):
+class Record(Xlum_DataFrame_Support):
 
     lstCurves:List[Curve]=lambda: []
 
@@ -159,7 +223,7 @@ class Record(object):
         )
 
 @dataclass
-class Sequence(object):
+class Sequence(Xlum_DataFrame_Support):
 
     lstRecords:List[Record]=lambda: []
 
@@ -200,7 +264,7 @@ class Sequence(object):
         )
 
 @dataclass
-class Sample(object):
+class Sample(Xlum_DataFrame_Support):
 
     lstSequences:List[Sequence]=lambda: []
 
@@ -248,7 +312,7 @@ class Sample(object):
 
 
 @dataclass
-class XlumMeta(object):
+class XlumMeta(Xlum_DataFrame_Support):
 
     lstSamples:List[Sample]=lambda: []
 
@@ -273,14 +337,3 @@ class XlumMeta(object):
             lstSamples = [Sample.from_element(e) for e in root.getchildren() if e.tag.lower() == 'sample'],
             formatVersion=root.attrib['formatVersion']
         )
-
-    @cached_property
-    def df(self) -> pd.DataFrame:
-        """dataclass as dataframe, but droping the nested list of samples
-
-        Returns:
-            pd.DataFrame: data frame
-        """
-        df = pd.DataFrame([self]).drop(labels="lstSamples", axis="columns")
-        df_samples = pd.json_normalize(asdict(sample) for sample in self.lstSamples).drop(labels="lstSequences", axis="columns")
-        return pd.concat([df, df_samples], axis="columns")
