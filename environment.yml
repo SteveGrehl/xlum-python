@@ -4,4 +4,9 @@ channels:
 dependencies:
  - lxml
  - pandas
+ - urllib
+ - openpyxl
+ - ipykernel
+ - jupyter
+ - notebook
  - pytest
