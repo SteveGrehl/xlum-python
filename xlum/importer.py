@@ -1,7 +1,7 @@
 import os
 from lxml import etree
 import logging
-import urllib
+# import urllib
 
 from data.classes import XlumMeta
 
@@ -22,6 +22,8 @@ def from_xlum(file_path: os.PathLike) -> XlumMeta:
     ), f"{file_path.split('.')[-1]} invalid, expected '.xlum'"
 
     xsd_path = os.path.join(os.getcwd(), "../assets/xlum_schema.xsd")
+    if not os.path.exists(xsd_path):
+        xsd_path = os.path.join(os.getcwd(), "/assets/xlum_schema.xsd")
     with open(xsd_path, "r") as f:
         xsd = f.read()
 
