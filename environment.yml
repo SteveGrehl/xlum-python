@@ -4,7 +4,7 @@ channels:
 dependencies:
  - lxml
  - pandas
- - urllib
+ - urllib3
  - openpyxl
  - ipykernel
  - jupyter
