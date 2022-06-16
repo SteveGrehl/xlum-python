@@ -1,24 +1,25 @@
+# see: https://docs.github.com/en/actions
 name: Xlum CI/CD
 
 on: 
   push:
-    branches: ["main"]
+    branches: ["main", "pandas-feature"]
   pull_request:
     branches: ["main"]
 
 jobs:
-  tests:
+  test:
     name: Python ${{ matrix.python-version }} sample on ${{ matrix.os }} at ${{ matrix.architecture }}
     runs-on:  ${{ matrix.os }}
     strategy:
       matrix:
-        os: [darwin, linux, win32]
-        python-version: [ '3.6.x', '3.7.x', '3.8.x', '3.9.x', '3.10.x']
-        architecture: ['x64', 'x86']
+        os: [darwin-latest, ubuntu-latest, windows-latest]
+        python-version: ['3.8', '3.9', '3.10']
+        architecture: ['x64']
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v3
       with:
         python-version: ${{ matrix.python-version }}
