@@ -2,7 +2,7 @@ name: Xlum CI/CD
 
 on: 
   push:
-    branches: ["main"]
+    branches: ["main", "pandas-feature"]
   pull_request:
     branches: ["main"]
 
