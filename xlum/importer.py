@@ -24,7 +24,7 @@ def from_xlum(file_path: os.PathLike) -> XlumMeta:
     xsd_path = os.path.join(os.getcwd(), "../assets/xlum_schema.xsd")
     if not os.path.exists(xsd_path):
         DIRNAME = os.path.dirname(__file__)
-        xsd_path = os.path.join(DIRNAME, "/assets/xlum_schema.xsd")
+        xsd_path = os.path.join(DIRNAME, "assets", "xlum_schema.xsd")
     with open(xsd_path, "r") as f:
         xsd = f.read()
 
