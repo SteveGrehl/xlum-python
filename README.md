@@ -4,7 +4,9 @@ Python importer for https://github.com/R-Lum/xlum_specification
 ## Requirements
 
 - lxml https://pypi.org/project/lxml/
-- pytest https://pypi.org/project/pytest/
+- pandas https://pandas.pydata.org/
+- urllib3 https://urllib3.readthedocs.io/en/stable/
+- openpyxl https://openpyxl.readthedocs.io/en/stable/
   
 ## Setting Up Conda
 
