@@ -168,8 +168,10 @@ class Curve(Xlum_DataFrame_Support):
             "filter",
             "detectionWindow",
         ]:
-            if k in attr:
+            if k in element.attrib:
                 attr[k] = element.attrib[k]
+                if k == "component":
+                    print(element.attrib[k])
             else:
                 attr[k] = "NA"
         # floats
