@@ -21,7 +21,9 @@ def test_import() -> None:
         assert isinstance(importer.from_xlum(
             os.path.join(
                 DIRNAME,
-                "../../assets/",
+                "..",
+                "..",
+                "assets",
                 fn
             )
         ), XlumMeta)
@@ -32,6 +34,9 @@ def test_import_fails() -> None:
     importer.from_xlum(
         os.path.join(
             DIRNAME,
-            "../../assets/xlum_invalid.xlum"
+            "..",
+            "..",
+            "assets",
+            "xlum_invalid.xlum"
         )
     )
