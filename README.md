@@ -7,8 +7,7 @@ Python importer for https://github.com/R-Lum/xlum_specification
 - pandas https://pandas.pydata.org/
 - urllib3 https://urllib3.readthedocs.io/en/stable/
 - openpyxl https://openpyxl.readthedocs.io/en/stable/
-
- - Access to GitHub for XSD schema validation
+- Access to GitHub for XSD schema validation
   
 ## Setting Up Conda
 
