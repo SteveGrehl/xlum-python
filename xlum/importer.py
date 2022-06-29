@@ -2,7 +2,7 @@ import os
 from lxml import etree
 import logging
 
-# import urllib
+import urllib.request
 
 from data.classes import XlumMeta
 
@@ -22,15 +22,9 @@ def from_xlum(file_path: os.PathLike) -> XlumMeta:
         file_path.split(".")[-1].lower() == "xlum"
     ), f"{file_path.split('.')[-1]} invalid, expected '.xlum'"
 
-    xsd_path = os.path.join(os.getcwd(), "../assets/xlum_schema.xsd")
-    if not os.path.exists(xsd_path):
-        DIRNAME = os.path.dirname(__file__)
-        xsd_path = os.path.join(DIRNAME, "..", "assets", "xlum_schema.xsd")
-    with open(xsd_path, "r") as f:
-        xsd = f.read()
-
-    # with urllib.request.urlopen('https://github.com/R-Lum/xlum/blob/main/inst/extdata/xlum_schema.xsd') as f:  # 404 ohne Login :(
-    #     xsd = f.read().decode('utf-8')
+    url = 'https://raw.githubusercontent.com/R-Lum/xlum_specification/master/xsd_schema/xlum_schema.xsd'  # https://github.com/R-Lum/xlum_specification/blob/master/xsd_schema/xlum_schema.xsd
+    with urllib.request.urlopen(url) as f:
+        xsd = f.read().decode('utf-8')
 
     xsd_source = etree.XML(xsd)
     schema = etree.XMLSchema(xsd_source)
