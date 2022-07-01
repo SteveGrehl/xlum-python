@@ -32,3 +32,7 @@ $ conda install jupyter notebook ipykernel matplotlib
 ```
 <Comming Soon>
 ```
+
+## Funding
+
+The development of the XLUM-format as format basis for reference data was supported by the European Union’s Horizon 2020 research and innovation programme under the Marie Skłodowska-Curie grant agreement No 844457 CREDit).
