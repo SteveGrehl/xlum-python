@@ -1,4 +1,5 @@
-# xlum-python
+# xlum-python <img width=120px src="docs/img/xlum-python_logo.png" align="right" />
+
 Python importer for the [XLUM data exchange and archive format](https://github.com/R-Lum/xlum_specification)
 
 ## System requirements
