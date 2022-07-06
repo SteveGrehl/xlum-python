@@ -1,24 +1,24 @@
-import sys
-import logging
 import os
 import pandas as pd
+import urllib
 
-DIRNAME = os.path.dirname(__file__)
-sys.path.append(os.path.join(DIRNAME, "../xlum"))
-from data.classes import XlumMeta, Sample, Record, Sequence, Curve
-import importer
+from xlum.data.classes import XlumMeta, Sample, Record, Sequence, Curve
+import xlum.importer
 
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
 
-    obj: XlumMeta = importer.from_xlum(
-        os.path.join(DIRNAME, "../assets/xlum_example.xlum")
-        # "/Users/sgrehl/Documents/GIT/xlum/R-package/xlum_v2/inst/extdata/xlum_example.xlum"
-        # "/Users/sgrehl/Downloads/BDX16646_OSL_SAR.xlum"
-        # "/Users/sgrehl/Downloads/BDX16646_RF70.xlum"
-    )
-    logging.debug(obj)
+    # Download example file
+    url = 'https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum' 
+    local_dir = os.path.join(os.getcwd(), "tmp")
+    local_path = os.path.join(local_dir, "example.xlum")
+    os.mkdir(local_dir)
+    urllib.request.urlretrieve(url, local_path)
+
+    obj: XlumMeta = xlum.importer.from_xlum(local_path)
+
+    os.remove(local_path)
+    os.rmdir(local_dir)
 
     df_xlum: pd.DataFrame = obj.df
     print(obj.__class__.__name__, "DataFrame:\n", df_xlum, "\n-----------")

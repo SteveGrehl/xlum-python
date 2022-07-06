@@ -4,7 +4,7 @@ import logging
 
 import urllib.request
 
-from data.classes import XlumMeta
+from xlum.data.classes import XlumMeta
 
 
 def from_xlum(file_path: os.PathLike) -> XlumMeta:
