@@ -3,7 +3,7 @@ name: Xlum CI/CD
 
 on: 
   push:
-    branches: ["main", "pandas-feature"]
+    branches: ["main"]
   pull_request:
     branches: ["main"]
 
@@ -33,6 +33,7 @@ jobs:
     - name: Install dependencies
       run: |
         conda env update --file environment.yml --name base
+        pip install .
     - name: Lint with flake8
       run: |
         conda install flake8
