@@ -1,5 +1,5 @@
-# xlum_python
-Python importer for https://github.com/R-Lum/xlum_specification
+# xlum-python
+Python importer for the [XLUM data exchange and archive format](https://github.com/R-Lum/xlum_specification)
 
 ## System requirements
 
