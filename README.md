@@ -12,11 +12,20 @@ Python importer for the [XLUM data exchange and archive format](https://github.c
   
 ## Setting up Conda
 
+Conda is an open source package management system and environment management system that runs on Windows, macOS, Linux and z/OS. Conda quickly installs, runs and updates packages and their dependencies. Conda easily creates, saves, loads and switches between environments on your local computer. It was created for Python programs, but it can package and distribute software for any language.
+
+Tutorial: https://towardsdatascience.com/how-to-set-up-anaconda-and-jupyter-notebook-the-right-way-de3b7623ea4a
+
 ```console
 $ conda env create --prefix ./env --file environment.yml; conda activate ./env
 ```
 
+Conda is however optional, but highly recommended.
+
 ### Adding jupyter support  (optional)
+
+The Jupyter Notebook is a web-based interactive computing platform. The notebook combines live code, equations, narrative text, visualizations and many more.
+More information can be found on https://jupyter.org/.
 
 ```console
 $ conda install jupyter notebook ipykernel matplotlib
