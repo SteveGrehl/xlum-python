@@ -6,3 +6,4 @@ dependencies:
  - pandas
  - urllib3
  - openpyxl
+ - base64

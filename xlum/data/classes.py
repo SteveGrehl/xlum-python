@@ -1,3 +1,4 @@
+import base64
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from typing import Dict, List
@@ -189,7 +190,12 @@ class Curve(Xlum_DataFrame_Support):
                 attr[k] = list(map(int, element.attrib[k].split()))
             else:
                 attr[k] = []
-        lstStrValues = re.findall(r"[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+", element.text)
+        # check if values are base64 encoded
+        strValues = element.text
+        b64_pattern = re.compile('^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$')
+        if re.fullmatch(b64_pattern, strValues):
+            strValues = base64.b64decode(strValues)
+        lstStrValues = re.findall(r"[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+", strValues)
         attr["lstValues"] = list(map(float, lstStrValues))
 
         if "startDate" not in element.attrib:
