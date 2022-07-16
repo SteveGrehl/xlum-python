@@ -17,7 +17,7 @@ def test_import() -> None:
     Args:
         fn (str): path to file
     """
-    for fn in ["xlum_example.xlum", "xlum_prototype.xlum"]:
+    for fn in ["xlum_example.xlum", "xlum_prototype.xlum", "xlum_prototype_b64.xlum"]:
         assert isinstance(importer.from_xlum(
             os.path.join(
                 DIRNAME,
