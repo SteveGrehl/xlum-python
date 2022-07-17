@@ -14,7 +14,7 @@ def get_assets_dir() -> os.PathLike:
     assets_dir = os.path.dirname(os.path.abspath(__file__)).split(os.sep)[:-2]
     if os.name == "posix":
         assets_dir = os.path.join("/", *assets_dir, "assets")
-    elif os.name == "windows":
+    elif os.name == "nt":
         assets_dir = os.path.join("C:", *assets_dir, "assets")
     else:
         assert False, f"{os.name=} not supported"
