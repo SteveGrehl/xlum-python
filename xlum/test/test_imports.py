@@ -12,7 +12,7 @@ def get_assets_dir() -> os.PathLike:
         os.PathLike: path to assets folder
     """
     assets_dir = os.path.dirname(__file__).split("/")[:-2]
-    assets_dir = os.path.join("/", *assets_dir, "assets")
+    assets_dir = os.path.join(os.sep, *assets_dir, "assets")
     assert os.path.isdir(assets_dir), f"{assets_dir=} not found"
     return assets_dir
 
@@ -29,12 +29,13 @@ def test_import(fn: os.PathLike) -> None:
     assert isinstance(importer.from_xlum(full_path), XlumMeta)
 
 
-def test_gh_import() -> None:
+@pytest.mark.parametrize("url", [('https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum')])
+def test_gh_import(url: str) -> None:
     # Download example file
-    url = 'https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum'
     local_dir = os.path.join(os.getcwd(), "tmp")
     local_path = os.path.join(local_dir, "example.xlum")
-    os.mkdir(local_dir)
+    if not os.path.exists(local_dir):
+        os.mkdir(local_dir)
     urllib.request.urlretrieve(url, local_path)
 
     try:
@@ -42,8 +43,10 @@ def test_gh_import() -> None:
             local_path
         ), XlumMeta)
     finally:
-        os.remove(local_path)
-        os.rmdir(local_dir)
+        if os.path.exists(local_path):
+            os.remove(local_path)
+        if os.path.exists(local_dir):
+            os.rmdir(local_dir)
 
 
 @pytest.mark.parametrize("fn", [("xlum_invalid.xlum")])
