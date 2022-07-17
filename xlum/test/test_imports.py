@@ -17,7 +17,7 @@ def get_assets_dir() -> os.PathLike:
     return assets_dir
 
 
-@pytest.mark.parametrize("fn", [("xlum_prototype.xlum")])
+@pytest.mark.parametrize("fn", [("xlum_prototype.xlum"), ("xlum_prototype_b64.xlum")])
 def test_import(fn: os.PathLike) -> None:
     """test if a file can be imported
 
