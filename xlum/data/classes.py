@@ -7,7 +7,7 @@ from lxml import etree
 import pandas as pd
 from functools import cached_property
 
-from data.enumerations import CurveType, RecordType, State, SampleCondition
+from xlum.data.enumerations import CurveType, RecordType, State, SampleCondition
 
 
 class Xlum_DataFrame_Support(object):
