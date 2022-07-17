@@ -1,33 +1,32 @@
 import pytest
 import os
 import urllib
-DIRNAME = os.path.dirname(__file__)
-import sys
-sys.path.append(
-    os.path.join(
-        DIRNAME,
-        '../')
-)
-from data.classes import XlumMeta
-import importer
+from xlum.data.classes import XlumMeta
+import xlum.importer as importer
 
 
-def test_import() -> None:
+def get_assets_dir() -> os.PathLike:
+    """return path to assets folder
+
+    Returns:
+        os.PathLike: path to assets folder
+    """
+    assets_dir = os.path.dirname(__file__).split("/")[:-2]
+    assets_dir = os.path.join("/", *assets_dir, "assets")
+    assert os.path.isdir(assets_dir), f"{assets_dir=} not found"
+    return assets_dir
+
+
+@pytest.mark.parametrize("fn", [("xlum_prototype.xlum")])
+def test_import(fn: os.PathLike) -> None:
     """test if a file can be imported
 
     Args:
         fn (str): path to file
     """
-    for fn in ["xlum_prototype.xlum"]:
-        assert isinstance(importer.from_xlum(
-            os.path.join(
-                DIRNAME,
-                "..",
-                "..",
-                "assets",
-                fn
-            )
-        ), XlumMeta)
+    full_path = os.path.join(get_assets_dir(), fn)
+    assert os.path.isfile(full_path), f"{full_path=} is not a file"
+    assert isinstance(importer.from_xlum(full_path), XlumMeta)
 
 
 def test_gh_import() -> None:
@@ -47,14 +46,9 @@ def test_gh_import() -> None:
         os.rmdir(local_dir)
 
 
+@pytest.mark.parametrize("fn", [("xlum_invalid.xlum")])
 @pytest.mark.xfail
-def test_import_fails() -> None:
-    importer.from_xlum(
-        os.path.join(
-            DIRNAME,
-            "..",
-            "..",
-            "assets",
-            "xlum_invalid.xlum"
-        )
-    )
+def test_import_fails(fn: os.PathLike) -> None:
+    full_path = os.path.join(get_assets_dir(), fn)
+    assert os.path.isfile(full_path), f"{full_path=} is not a file"
+    importer.from_xlum(full_path)

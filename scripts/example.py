@@ -9,7 +9,7 @@ import xlum.importer
 def main():
 
     # Download example file
-    url = 'https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum' 
+    url = 'https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum'
     local_dir = os.path.join(os.getcwd(), "tmp")
     local_path = os.path.join(local_dir, "example.xlum")
     os.mkdir(local_dir)
