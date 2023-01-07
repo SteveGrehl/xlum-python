@@ -40,7 +40,16 @@ $ conda install jupyter notebook ipykernel matplotlib
 
 ## Citing
 ```
-<Comming Soon>
+@Article{gchron-2022-27,
+AUTHOR = {Kreutzer, S. and Grehl, S. and H\"ohne, M. and Simmank, O. and Dornich, K. and Adamiec, G. and Burow, C. and Roberts, H. and Duller, G.},
+TITLE = {XLUM: an open data format for exchange and long-term data preservation of luminescence data},
+JOURNAL = {Geochronology Discussions},
+VOLUME = {2022},
+YEAR = {2022},
+PAGES = {1--22},
+URL = {https://gchron.copernicus.org/preprints/gchron-2022-27/},
+DOI = {10.5194/gchron-2022-27}
+}
 ```
 
 ## Funding
