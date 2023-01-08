@@ -132,3 +132,4 @@ dmypy.json
 # Custom
 *.DS_Store
 *.vscode/*
+env*
