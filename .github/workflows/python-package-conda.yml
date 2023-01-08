@@ -1,5 +1,5 @@
 # see: https://docs.github.com/en/actions
-name: Xlum CI/CD
+name: Xlum Tests
 
 on: 
   push:
