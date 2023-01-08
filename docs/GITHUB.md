@@ -1,7 +1,7 @@
-# xlum-python <img width=120px src="img/xlum-python_logo.png" align="right" />
+# xlum <img width=120px src="img/xlum-python_logo.png" align="right" />
 
 Python importer for the [XLUM data exchange and archive format](https://github.com/R-Lum/xlum_specification)
-You may isntall it using pip:
+You may install `xlum` using pip:
 ```console
 $ pip install xlum
 ```
@@ -14,9 +14,9 @@ $ pip install xlum
 - openpyxl https://openpyxl.readthedocs.io/en/stable/
 - Access to GitHub for XSD schema validation
   
-## Setting up Conda
+## Setting up Conda (optional)
 
-Conda is an open source package management system and environment management system that runs on Windows, macOS, Linux and z/OS. Conda quickly installs, runs and updates packages and their dependencies. Conda easily creates, saves, loads and switches between environments on your local computer. It was created for Python programs, but it can package and distribute software for any language.
+[Conda](https://conda.io) is an open-source package and environment management system that runs on Windows, macOS, Linux, and z/OS. Conda quickly installs, runs and updates packages and their dependencies. Conda easily creates, saves, loads and switches between environments on your local computer. It was created for Python programs but can package and distribute software for any language.
 
 Tutorial: https://towardsdatascience.com/how-to-set-up-anaconda-and-jupyter-notebook-the-right-way-de3b7623ea4a
 
@@ -24,11 +24,11 @@ Tutorial: https://towardsdatascience.com/how-to-set-up-anaconda-and-jupyter-note
 $ conda env create --prefix ./env --file environment.yml; conda activate ./env
 ```
 
-Conda is however optional, but highly recommended.
+The installation of Conda is optional, but highly recommended.
 
-### Adding jupyter support  (optional)
+### Adding Jupyter support  (optional)
 
-The Jupyter Notebook is a web-based interactive computing platform. The notebook combines live code, equations, narrative text, visualizations and many more.
+The [Jupyter](https://jupyter.org) Notebook is a web-based interactive computing platform. The notebook combines live code, equations, narrative text, visualizations and many more.
 More information can be found on https://jupyter.org/.
 
 ```console
