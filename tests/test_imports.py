@@ -11,7 +11,7 @@ def get_assets_dir() -> os.PathLike:
     Returns:
         os.PathLike: path to assets folder
     """
-    assets_dir = os.path.dirname(os.path.abspath(__file__)).split(os.sep)[:-2]
+    assets_dir = os.path.dirname(os.path.abspath(__file__)).split(os.sep)[:-1]
     if os.name == "posix":
         assets_dir = os.path.join(os.sep, *assets_dir, "assets")
     elif os.name == "nt":
