@@ -1,5 +1,5 @@
 # see: https://docs.github.com/en/actions
-name: Xlum Tests
+name: xlum Tests
 
 on: 
   push:
