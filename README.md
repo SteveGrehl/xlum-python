@@ -13,7 +13,7 @@ Python importer for the [XLUM data exchange and archive format](https://github.c
 ## Installation
 
 ```console
-$ pip install xlum-python
+$ pip install xlum
 ```
 
 ## Usage
