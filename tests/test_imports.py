@@ -1,7 +1,7 @@
 import pytest
 import os
 import urllib
-import xlum
+from xlum import from_xlum 
 from xlum.data.classes import XlumMeta
 
 def get_assets_dir() -> os.PathLike:
