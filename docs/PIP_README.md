@@ -20,7 +20,7 @@ $ pip install xlum
 ```python
 import xlum
 
-meta_obj = xlum.importer.from_xlum(file_name="<Path to Xlum>")
+meta_obj = xlum.from_xlum(file_name="<Path to Xlum>")
 ```
 
 ## Citing

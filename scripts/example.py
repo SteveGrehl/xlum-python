@@ -1,56 +1,28 @@
-import os
-import pandas as pd
-import urllib
+### more sophisticated examples with plotting
+import xlum
+import matplotlib
+from matplotlib import pyplot as plt
+from tkinter.filedialog import askopenfilename
 
-from xlum.data.classes import XlumMeta, Sample, Record, Sequence, Curve
-import xlum.importer
+filename = askopenfilename()
+obj = xlum.from_xlum(filename)
 
-
-def main():
-
-    # Download example file
-    url = 'https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum'
-    local_dir = os.path.join(os.getcwd(), "tmp")
-    local_path = os.path.join(local_dir, "example.xlum")
-    os.mkdir(local_dir)
-    urllib.request.urlretrieve(url, local_path)
-
-    obj: XlumMeta = xlum.importer.from_xlum(local_path)
-
-    os.remove(local_path)
-    os.rmdir(local_dir)
-
-    df_xlum: pd.DataFrame = obj.df
-    print(obj.__class__.__name__, "DataFrame:\n", df_xlum, "\n-----------")
-    for sample in obj.lstSamples:
-        sample: Sample
-        df_sequences: pd.DataFrame = sample.df
-        print(sample.__class__.__name__, "DataFrame:\n", df_sequences, "\n-----------")
-        for sequence in sample.lstSequences:
-            sequence: Sequence
-            df_records: pd.DataFrame = sequence.df
-            print(
-                sequence.__class__.__name__, "DataFrame:\n", df_records, "\n-----------"
-            )
-            for record in sequence.lstRecords:
-                record: Record
-                df_curves: pd.DataFrame = record.df
-                print(
-                    record.__class__.__name__,
-                    "DataFrame:\n",
-                    df_curves,
-                    "\n-----------",
+for sample in obj.lstSamples:
+    for idx_s, sequence in enumerate(sample.lstSequences):
+        for idx_r, record in enumerate(sequence.lstRecords):
+            plt.figure(idx_s*100+idx_r)
+            for curve in record.lstCurves:
+                plt.plot(curve.lstValues, "o-", label=f"{curve.component} - {curve.vLabel} in [{curve.vUnit}] '{curve.curveType.name.lower()}'")
+                plt.xlabel(f"{curve.tLabel} in [{curve.tUnit}]")
+                if curve.yLabel != "NA":
+                    plt.ylabel(f"{curve.yLabel} in [{curve.yUnit}]")
+            plt.title(
+                f"""
+                {obj.author}
+                {sample.name}: {sample.mineral} from ({sample.longitude:.2f}, {sample.latitude:.2f}, {sample.altitude:.2f})
+                {sequence.fileName} by {sequence.software}
+                {record.recordType.name}{' - '+ record._meta.comment if record._meta.comment != "NA" else ""}
+                """
                 )
-                for curve in record.lstCurves:
-                    curve: Curve
-                    df_values: pd.DataFrame = curve.df
-                    print(
-                        curve.__class__.__name__,
-                        "DataFrame:\n",
-                        df_values,
-                        "\n-----------",
-                    )
-
-
-if __name__ == "__main__":
-    main()
+            plt.legend()
+plt.show()

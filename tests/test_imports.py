@@ -1,9 +1,8 @@
 import pytest
 import os
 import urllib
+import xlum
 from xlum.data.classes import XlumMeta
-import xlum.importer as importer
-
 
 def get_assets_dir() -> os.PathLike:
     """return path to assets folder
@@ -31,7 +30,7 @@ def test_import(fn: os.PathLike) -> None:
     """
     full_path = os.path.join(get_assets_dir(), fn)
     assert os.path.isfile(full_path), f"{full_path=} is not a file"
-    assert isinstance(importer.from_xlum(full_path), XlumMeta)
+    assert isinstance(from_xlum(full_path), XlumMeta)
 
 
 @pytest.mark.parametrize("url", [('https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum')])
@@ -44,7 +43,7 @@ def test_gh_import(url: str) -> None:
     urllib.request.urlretrieve(url, local_path)
 
     try:
-        assert isinstance(importer.from_xlum(
+        assert isinstance(from_xlum(
             local_path
         ), XlumMeta)
     finally:
@@ -59,4 +58,4 @@ def test_gh_import(url: str) -> None:
 def test_import_fails(fn: os.PathLike) -> None:
     full_path = os.path.join(get_assets_dir(), fn)
     assert os.path.isfile(full_path), f"{full_path=} is not a file"
-    importer.from_xlum(full_path)
+    from_xlum(full_path)
