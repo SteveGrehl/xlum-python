@@ -9,6 +9,7 @@ class CurveType(enum.Enum):
     MEASURED=0
     PREDEFINED=1
 
+
 class RecordType(enum.Enum):
     NA=-2
     UNKNOWN=-1
@@ -39,12 +40,14 @@ class RecordType(enum.Enum):
     USER =1000
     CUSTOM=1100
 
+
 class State(enum.Enum):
     NA=-2
     UNKNOWN=-1
     PLANNED=0
     STARTED=1
     FINISHED=2
+
 
 class SampleCondition(enum.Enum):
     NA=-2

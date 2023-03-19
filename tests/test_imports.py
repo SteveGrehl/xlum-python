@@ -31,7 +31,12 @@ def test_import(fn: os.PathLike) -> None:
     """
     full_path = os.path.join(get_assets_dir(), fn)
     assert os.path.isfile(full_path), f"{full_path=} is not a file"
-    assert isinstance(importer.from_xlum(full_path), XlumMeta)
+    assert isinstance(importer.from_xlum(full_path), XlumMeta), f"Wrong return type {type(importer.from_xlum(full_path))} expected XlumMeta"
+    import xlum
+    assert xlum.from_xlum == importer.from_xlum, f"Function missmatch between {xlum.from_xlum} (package) and {importer.from_xlum} (module)"
+    resp1 = importer.from_xlum(full_path)
+    resp2 = xlum.from_xlum(full_path)
+    assert resp1 == resp2, f"Result missmatch between {resp1} (importer.from_xlum) and {resp2} (xlum.from_xlum)"
 
 
 @pytest.mark.parametrize("url", [('https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum')])

@@ -6,6 +6,7 @@ import re
 from lxml import etree
 import pandas as pd
 from functools import cached_property
+import logging
 
 from xlum.data.enumerations import CurveType, RecordType, State, SampleCondition
 
@@ -108,9 +109,9 @@ class XLum_Meta(object):
                 attr["state"] = State.UNKNOWN
             else:
                 attr["state"] = State[dct["state"].upper()]
-        except Exception as ex:
-            print(ex)
-            attr["state"] = dct["state"]
+        except KeyError as ex:
+            logging.warning(f"KeyError: got {ex} expected one of {[s.name for s in State]}, using {State.UNKNOWN.name}")
+            attr["state"] = State.UNKNOWN.name
 
         return XLum_Meta(**attr)
 
@@ -172,7 +173,7 @@ class Curve(Xlum_DataFrame_Support):
             if k in element.attrib:
                 attr[k] = element.attrib[k]
                 if k == "component":
-                    print(element.attrib[k])
+                    logging.info(f"{k}: {element.attrib[k]}")
             else:
                 attr[k] = "NA"
         # floats
@@ -408,7 +409,7 @@ class XlumMeta(Xlum_DataFrame_Support):
         root: etree.Element = tree.getroot()
         assert root.tag.lower() == "xlum", f"{root.tag=} expected 'xlum'"
         for e in root.getchildren():
-            print(e.tag)
+            logging.info(f"{e.tag}")
 
         attr = {}
         # strings
