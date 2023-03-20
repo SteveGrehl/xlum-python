@@ -13,14 +13,14 @@ Python importer for the [XLUM data exchange and archive format](https://github.c
 ## Installation
 
 ```console
-$ pip install xlum-python
+$ pip install xlum
 ```
 
 ## Usage
 ```python
 import xlum
 
-meta_obj = xlum.importer.from_xlum(file_name="<Path to Xlum>")
+meta_obj = xlum.from_xlum(file_name="<Path to Xlum>")
 ```
 
 ## Citing
