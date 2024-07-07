@@ -1,7 +1,5 @@
-from asyncio.base_futures import _FINISHED
 import enum
 
-from pkg_resources import UnknownExtra
 
 class CurveType(enum.Enum):
     NA=-2
