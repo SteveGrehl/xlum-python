@@ -1,14 +1,15 @@
 import base64
-from dataclasses import dataclass, asdict
-from datetime import datetime
-from typing import Dict, List
-import re
-from lxml import etree
-import pandas as pd
-from functools import cached_property
 import logging
+import re
+from dataclasses import asdict, dataclass, field
+from datetime import datetime
+from functools import cached_property
+from typing import Dict, List
 
-from xlum.data.enumerations import CurveType, RecordType, State, SampleCondition
+import pandas as pd
+from lxml import etree
+
+from xlum.data.enumerations import CurveType, RecordType, SampleCondition, State
 
 
 class Xlum_DataFrame_Support(object):
@@ -110,7 +111,9 @@ class XLum_Meta(object):
             else:
                 attr["state"] = State[dct["state"].upper()]
         except KeyError as ex:
-            logging.warning(f"KeyError: got {ex} expected one of {[s.name for s in State]}, using {State.UNKNOWN.name}")
+            logging.warning(
+                f"KeyError: got {ex} expected one of {[s.name for s in State]}, using {State.UNKNOWN.name}"
+            )
             attr["state"] = State.UNKNOWN.name
 
         return XLum_Meta(**attr)
@@ -118,7 +121,6 @@ class XLum_Meta(object):
 
 @dataclass
 class Curve(Xlum_DataFrame_Support):
-
     lstValues: List = lambda: []  # internal list in the curve node
 
     component: str = "NA"
@@ -126,9 +128,9 @@ class Curve(Xlum_DataFrame_Support):
     curveType: CurveType = CurveType.UNKNOWN
     duration: float = 0.0
     offset: float = 0.0
-    xValues: List[
-        int
-    ] = lambda: []  # see: https://stackoverflow.com/questions/52063759/passing-default-list-argument-to-dataclasses
+    xValues: List[int] = (
+        lambda: []
+    )  # see: https://stackoverflow.com/questions/52063759/passing-default-list-argument-to-dataclasses
     yValues: List[int] = lambda: []
     tValues: List[int] = lambda: []
     xLabel: str = "NA"
@@ -141,7 +143,7 @@ class Curve(Xlum_DataFrame_Support):
     vUnit: str = "NA"
     detectionWindow: str = "NA"
     filter: str = "NA"
-    _meta: XLum_Meta = XLum_Meta(comment="empty curve")
+    _meta: XLum_Meta = field(default_factory=lambda: XLum_Meta(comment="empty curve"))
 
     @classmethod
     def from_element(cls, element: etree.Element) -> "Curve":
@@ -193,7 +195,9 @@ class Curve(Xlum_DataFrame_Support):
                 attr[k] = []
         # check if values are base64 encoded
         strValues = element.text
-        b64_pattern = re.compile('^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$')
+        b64_pattern = re.compile(
+            "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$"
+        )
         if re.fullmatch(b64_pattern, strValues):
             strValues = base64.b64decode(strValues)
         lstStrValues = re.findall(r"[\d]+[.,\d]+|[\d]*[.][\d]+|[\d]+", strValues)
@@ -244,14 +248,13 @@ class Curve(Xlum_DataFrame_Support):
 
 @dataclass
 class Record(Xlum_DataFrame_Support):
-
     lstCurves: List[Curve] = lambda: []
 
     recordType: RecordType = RecordType.UNKNOWN
     sequenceStepNumber: int = 0
     sampleCondition: SampleCondition = SampleCondition.UNKNOWN
 
-    _meta: XLum_Meta = XLum_Meta(comment="empty record")
+    _meta: XLum_Meta = field(default_factory=lambda: XLum_Meta(comment="empty record"))
 
     @classmethod
     def from_element(cls, element: etree.Element) -> "Record":
@@ -294,7 +297,6 @@ class Record(Xlum_DataFrame_Support):
 
 @dataclass
 class Sequence(Xlum_DataFrame_Support):
-
     lstRecords: List[Record] = lambda: []
 
     fileName: str = "NA"
@@ -303,7 +305,7 @@ class Sequence(Xlum_DataFrame_Support):
     readerSN: str = "NA"
     readerFW: str = "NA"
 
-    _meta: XLum_Meta = XLum_Meta(comment="empty sequence")
+    _meta: XLum_Meta = field(default_factory=lambda: XLum_Meta(comment="empty sequence"))
 
     @classmethod
     def from_element(cls, element: etree.Element) -> "Sequence":
@@ -338,7 +340,6 @@ class Sequence(Xlum_DataFrame_Support):
 
 @dataclass
 class Sample(Xlum_DataFrame_Support):
-
     lstSequences: List[Sequence] = lambda: []
 
     name: str = "NA"
@@ -348,7 +349,7 @@ class Sample(Xlum_DataFrame_Support):
     altitude: float = -1000.0
     doi: str = "NA"
 
-    _meta: XLum_Meta = XLum_Meta(comment="empty sample")
+    _meta: XLum_Meta = field(default_factory=lambda: XLum_Meta(comment="empty sample"))
 
     @classmethod
     def from_element(cls, element: etree.Element) -> "Sample":
@@ -388,7 +389,6 @@ class Sample(Xlum_DataFrame_Support):
 
 @dataclass
 class XlumMeta(Xlum_DataFrame_Support):
-
     lstSamples: List[Sample] = lambda: []
 
     formatVersion: str = "NA"

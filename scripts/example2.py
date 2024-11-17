@@ -1,16 +1,14 @@
 import xlum
 
 try:
-    import matplotlib
     from matplotlib import pyplot as plt
 except ModuleNotFoundError:
     import pip
     pip.main(["install", "--user", "matplotlib"])
 finally:
-    import matplotlib
     from matplotlib import pyplot as plt
 try:
-    import tkinter
+    from tkinter.filedialog import askopenfilename
 except ModuleNotFoundError:
     import pip
     pip.main(["install", "--user", "tkinter"])
