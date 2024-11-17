@@ -1,5 +1,5 @@
 import base64
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 from datetime import datetime
 from typing import Dict, List
 import re
@@ -141,7 +141,7 @@ class Curve(Xlum_DataFrame_Support):
     vUnit: str = "NA"
     detectionWindow: str = "NA"
     filter: str = "NA"
-    _meta: XLum_Meta = XLum_Meta(comment="empty curve")
+    _meta: XLum_Meta = field(default_factory=XLum_Meta(comment="empty curve"))
 
     @classmethod
     def from_element(cls, element: etree.Element) -> "Curve":
