@@ -18,14 +18,14 @@ jobs:
         architecture: ['x64']
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
         architecture: ${{ matrix.architecture }}
     - name: setup-conda
-      uses: s-weigand/setup-conda@v1.1.1
+      uses: s-weigand/setup-conda@v1
     - name: Add conda to system path
       run: |
         # $CONDA is an environment variable pointing to the root of the miniconda directory
