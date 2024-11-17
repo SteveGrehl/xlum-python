@@ -1,5 +1,6 @@
 ---
 # Status of Python versions: https://devguide.python.org/versions/
+# Also change github workflow in python-package-conda.yml
 python_version:
   - 3.8
   - 3.9
