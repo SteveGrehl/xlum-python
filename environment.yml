@@ -1,8 +1,0 @@
-name: xlum-env
-channels:
-  - defaults
-dependencies:
- - lxml
- - pandas
- - urllib3
- - openpyxl
