@@ -1,15 +1,17 @@
-import pytest
 import os
-import urllib
-from xlum.data.classes import XlumMeta
+
+import pytest
+import requests
+
 import xlum.importer as importer
+from xlum.data.classes import XlumMeta
 
 
-def get_assets_dir() -> os.PathLike:
+def get_assets_dir() -> str:
     """return path to assets folder
 
     Returns:
-        os.PathLike: path to assets folder
+        str: path to assets folder
     """
     assets_dir = os.path.dirname(os.path.abspath(__file__)).split(os.sep)[:-1]
     if os.name == "posix":
@@ -31,27 +33,41 @@ def test_import(fn: os.PathLike) -> None:
     """
     full_path = os.path.join(get_assets_dir(), fn)
     assert os.path.isfile(full_path), f"{full_path=} is not a file"
-    assert isinstance(importer.from_xlum(full_path), XlumMeta), f"Wrong return type {type(importer.from_xlum(full_path))} expected XlumMeta"
+    assert isinstance(importer.from_xlum(full_path), XlumMeta), (
+        f"Wrong return type {type(importer.from_xlum(full_path))} expected XlumMeta"
+    )
     import xlum
-    assert xlum.from_xlum == importer.from_xlum, f"Function missmatch between {xlum.from_xlum} (package) and {importer.from_xlum} (module)"
+
+    assert xlum.from_xlum == importer.from_xlum, (
+        f"Function missmatch between {xlum.from_xlum} (package) and {importer.from_xlum} (module)"
+    )
     resp1 = importer.from_xlum(full_path)
     resp2 = xlum.from_xlum(full_path)
-    assert resp1 == resp2, f"Result missmatch between {resp1} (importer.from_xlum) and {resp2} (xlum.from_xlum)"
+    assert resp1 == resp2, (
+        f"Result missmatch between {resp1} (importer.from_xlum) and {resp2} (xlum.from_xlum)"
+    )
 
 
-@pytest.mark.parametrize("url", [('https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum')])
+@pytest.mark.parametrize(
+    "url",
+    [
+        (
+            "https://raw.githubusercontent.com/R-Lum/xlum_specification/master/examples/xlum_example.xlum"
+        )
+    ],
+)
 def test_gh_import(url: str) -> None:
     # Download example file
     local_dir = os.path.join(os.getcwd(), "tmp")
     local_path = os.path.join(local_dir, "example.xlum")
     if not os.path.exists(local_dir):
         os.mkdir(local_dir)
-    urllib.request.urlretrieve(url, local_path)
+    response = requests.get(url)
+    with open(local_path, "wb") as f_ptr:
+        f_ptr.write(response.content)
 
     try:
-        assert isinstance(importer.from_xlum(
-            local_path
-        ), XlumMeta)
+        assert isinstance(importer.from_xlum(local_path), XlumMeta)
     finally:
         if os.path.exists(local_path):
             os.remove(local_path)

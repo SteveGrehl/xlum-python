@@ -1,31 +1,29 @@
-import os
-from lxml import etree
 import logging
+import os
 
-import urllib.request
+import lxml.etree as etree
+import requests
 
 from xlum.data.classes import XlumMeta
 
 
-def from_xlum(file_path: os.PathLike) -> XlumMeta:
+def from_xlum(file_path: str) -> XlumMeta:
     """import data from an *.xlum file
 
     Args:
-        file_path (os.PathLike): path to the file
+        file_path (str): path to the file
 
     Returns:
         XlumMeta: structured data, see: xlum.data.classes for a
                   description of the dataclasses
     """
     assert os.path.exists(file_path), f"{file_path=} not found"
-    assert (
-        file_path.split(".")[-1].lower() == "xlum"
-    ), f"{file_path.split('.')[-1]} invalid, expected '.xlum'"
+    assert file_path.split(".")[-1].lower() == "xlum", (
+        f"{file_path.split('.')[-1]} invalid, expected '.xlum'"
+    )
 
-    url = 'https://raw.githubusercontent.com/R-Lum/xlum_specification/master/xsd_schema/xlum_schema.xsd'  # https://github.com/R-Lum/xlum_specification/blob/master/xsd_schema/xlum_schema.xsd
-    with urllib.request.urlopen(url) as f:
-        xsd = f.read().decode('utf-8')
-
+    url = "https://raw.githubusercontent.com/R-Lum/xlum_specification/master/xsd_schema/xlum_schema.xsd"  # https://github.com/R-Lum/xlum_specification/blob/master/xsd_schema/xlum_schema.xsd
+    xsd = requests.get(url).content
     xsd_source = etree.XML(xsd)
     schema = etree.XMLSchema(xsd_source)
     parser = etree.XMLParser(schema=schema)

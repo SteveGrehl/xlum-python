@@ -1,5 +1,46 @@
-#see: https://godatadriven.com/blog/a-practical-guide-to-setuptools-and-pyproject-toml/
-# using the 'src/ layout'
+## see: https://packaging.python.org/en/latest/guides/writing-pyproject-toml/
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["uv_build >= 0.7.19, <0.9.0"]
+build-backend = "uv_build"
+
+[project]
+name = "xlum"
+authors = [
+  { name = "Steve Grehl", email = "research@steve-grehl.de" },
+  { name = "Sebastian Kreutzer" },
+]
+description = "Python importer for the XLUM data exchange and archive format"
+readme = { file = "README.md", content-type = "text/markdown" }
+license-files = ["LICENSE"]
+classifiers = [
+  # How mature is this project? Common values are
+  #   3 - Alpha
+  #   4 - Beta
+  #   5 - Production/Stable
+  "Development Status :: 4 - Beta",
+  # Indicate who your project is intended for
+  "Intended Audience :: Education",
+  "Topic :: File Formats",
+  "Operating System :: OS Independent",
+  # Specify the Python versions you support here.
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+requires-python = ">=3.9"
+### 
+version = "0.0.9"
+dependencies = [
+  "lxml",
+  "pandas",
+  "requests",
+  "openpyxl",
+  "pytest>=8.4.1",
+  "certifi>=2025.8.3",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
