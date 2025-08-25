@@ -1,5 +1,13 @@
 name: xlum tests
 
+on:
+  push:
+    branches:
+      - main
+      - "feat/**"
+  pull_request:
+    branches: ["main"]
+
 # see: https://docs.astral.sh/uv/guides/integration/github/#multiple-python-versions
 jobs:
   build:
