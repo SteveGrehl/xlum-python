@@ -6,7 +6,7 @@ build-backend = "uv_build"
 [project]
 name = "xlum"
 authors = [
-  { name = "Steve Grehl", email = "research@steve-grehl.de" },
+  { name = "Steve Grehl", email = "research@steve-grehl.eu" },
   { name = "Sebastian Kreutzer" },
 ]
 description = "Python importer for the XLUM data exchange and archive format"
@@ -41,6 +41,3 @@ dependencies = [
   "pytest>=8.4.1",
   "certifi>=2025.8.3",
 ]
-
-[project.optional-dependencies]
-dev = ["pytest"]

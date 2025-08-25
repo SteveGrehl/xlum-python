@@ -677,11 +677,6 @@ dependencies = [
     { name = "requests" },
 ]
 
-[package.optional-dependencies]
-dev = [
-    { name = "pytest" },
-]
-
 [package.metadata]
 requires-dist = [
     { name = "certifi", specifier = ">=2025.8.3" },
@@ -689,7 +684,5 @@ requires-dist = [
     { name = "openpyxl" },
     { name = "pandas" },
     { name = "pytest", specifier = ">=8.4.1" },
-    { name = "pytest", marker = "extra == 'dev'" },
     { name = "requests" },
 ]
-provides-extras = ["dev"]
