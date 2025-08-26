@@ -34,5 +34,8 @@ jobs:
       - name: Install xlum python package
         run: uv sync --locked
 
+      - name: Install pytest (not part of package dependencies)
+        run: uv pip install pytest
+
       - name: Run tests
         run: uv run pytest tests

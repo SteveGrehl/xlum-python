@@ -33,11 +33,4 @@ classifiers = [
 requires-python = ">=3.9"
 ### 
 version = "0.0.9"
-dependencies = [
-  "lxml",
-  "pandas",
-  "requests",
-  "openpyxl",
-  "pytest>=8.4.1",
-  "certifi>=2025.8.3",
-]
+dependencies = ["lxml", "pandas", "requests", "openpyxl"]
