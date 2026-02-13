@@ -4,19 +4,20 @@ Python importer for the [XLUM data exchange and archive format](https://github.c
 
 ## System requirements
 
-- lxml https://pypi.org/project/lxml/
-- pandas https://pandas.pydata.org/
-- urllib3 https://urllib3.readthedocs.io/en/stable/
-- openpyxl https://openpyxl.readthedocs.io/en/stable/
+- [lxml](https://pypi.org/project/lxml/)
+- [pandas](https://pandas.pydata.org/)
+- [openpyxl](https://openpyxl.readthedocs.io/en/stable/)
+- [requests](https://requests.readthedocs.io/en/latest/)
 - Access to GitHub for XSD schema validation
-  
+
 ## Installation
 
 ```console
-$ pip install xlum
+pip install xlum
 ```
 
 ## Usage
+
 ```python
 import xlum
 
@@ -24,7 +25,8 @@ meta_obj = xlum.from_xlum(file_name="<Path to Xlum>")
 ```
 
 ## Citing
-```
+
+```tex
 @Article{gchron-2022-27,
     AUTHOR = {Kreutzer, S. and Grehl, S. and H\"ohne, M. and Simmank, O. and Dornich, K. and Adamiec, G. and Burow, C. and Roberts, H. and Duller, G.},
     TITLE = {XLUM: an open data format for exchange and long-term data preservation of luminescence data},
